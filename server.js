@@ -2,9 +2,6 @@ const inquirer = require('inquirer');
 const mysql = require('mysql');
 require('dotenv').config();
 const consoleTable = require('console.table');
-const departmentsMenu = require('./assets/departmentsMenu');
-// const rolesMenu = require('./assets/roles');
-// const employeesMenu = require('./assets/employees');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -39,11 +36,11 @@ const mainMenu = () => {
           break;
   
           case "Employees":
-            employeesMenu();
+            // employeesMenu();
             break;
           
           case "Roles":
-            rolesMenu();
+            // rolesMenu();
             break;
   
           case "End Session":
@@ -54,4 +51,60 @@ const mainMenu = () => {
     });
   };
 
-  module.exports = server;
+  const departmentsMenu = () => {
+    inquirer.prompt ([
+        {
+            type: 'list',
+            message: 'What would you like to do?',
+            name: 'deptInit',
+            choices: ['View Departments', 'Add Department', 'Back to Main Menu']
+        }
+    ])
+    .then(response => {
+        switch (response.deptInit) {
+            case 'View Departments':
+                viewDepartments();
+                break;
+            case 'Add Department':
+                addDepartment();
+                break;
+            case 'Back to Main Menu':
+                mainMenu();
+                break;
+        };
+    });
+};
+
+const viewDepartments = () => {
+    connection.query('SELECT * FROM employee_db.department', (err, res) => {
+        if (err) throw err;
+        console.log('\n-----------------------------------');
+        console.table(res);
+        console.log('Press arrow key to bring down menu!\n-----------------------------------\n');
+    });
+    departmentsMenu();
+};
+
+const addDepartment = () => {
+    inquirer
+    .prompt([
+      {
+        name: "add",
+        type: "input",
+        message: "Please enter a department name.",
+      },
+    ])
+    .then(response => {
+      connection.query(
+        "INSERT INTO employee_db.department SET ?",
+        {
+          name: response.add,
+        },
+        function (err) {
+          if (err) throw err;
+          console.log(`You have created a department: \n'${response.add}'.`)
+          departmentsMenu();
+        }
+      );
+    });
+};
