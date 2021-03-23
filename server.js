@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const mysql = require('mysql');
 require('dotenv').config();
 const consoleTable = require('console.table');
-// const departmentsMenu = require('./assets/departments');
+const departmentsMenu = require('./assets/departmentsMenu');
 // const rolesMenu = require('./assets/roles');
 // const employeesMenu = require('./assets/employees');
 
@@ -50,7 +50,8 @@ const mainMenu = () => {
             console.log('Goodbye!')
             connection.end();
             break;
-      }
-    })
+      };
+    });
   };
 
+  module.exports = server;
