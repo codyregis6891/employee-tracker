@@ -23,3 +23,22 @@ VALUES ('Head Coach', 1000000, 1),
        ('Ticket Sales', 35000, 6),
        ('Usher', 35000, 6),
        ('Marketing', 115000, 6);
+
+INSERT INTO employee (first_name, last_name, role_id)
+VALUES ('Colin', 'Bray', 9),
+        ('Grant', 'Heyman', 8),
+        ('John', 'Savage', 1),
+        ('Rick', 'Vanderhook', 2),
+        ('Johnny', 'Tooze', 3),
+        ('Chad', 'Swole', 4),
+        ('Pete', 'Wheeler', 5),
+        ('Dr.', 'Sachin', 6),
+        ('Ethan', 'Elias', 7),
+        ('Alex', 'Guerrero', 10),
+        ('Gordon', 'Ramsay', 11),
+        ('Joe', 'Buck', 12),
+        ('Karl', 'Ravich', 13),
+        ('Pablo', 'Sanchez', 14),
+        ('Dan', 'Henley', 15),
+        ('Shawn', 'Regis', 16);
+        
