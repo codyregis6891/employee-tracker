@@ -40,7 +40,7 @@ const mainMenu = () => {
             break;
   
           case "Employees":
-            // employeesMenu();
+            employeesMenu();
             break;        
   
           case "End Session":
@@ -78,11 +78,9 @@ const mainMenu = () => {
 const viewDepartments = () => {
     connection.query('SELECT * FROM employee_db.department', (err, res) => {
         if (err) throw err;
-        console.log('\n-----------------------------------');
         console.table(res);
-        console.log('Press arrow key to bring down menu!\n-----------------------------------\n');
+        departmentsMenu();
     });
-    departmentsMenu();
 };
 
 const addDepartment = () => {
@@ -136,11 +134,9 @@ const rolesMenu = () => {
 const viewRoles = () => {
     connection.query('SELECT role.id, role.title, role.salary, department.name as "Department Name" FROM employee_db.role INNER JOIN employee_db.department ON role.department_id = department.id', (err, res) => {
         if (err) throw err;
-        console.log('\n-----------------------------------');
         console.table(res);
-        console.log('Press arrow key to bring down menu!\n-----------------------------------\n');
+        departmentsMenu();
     });
-    departmentsMenu();
 };
 
 let departmentId = [];
@@ -151,7 +147,7 @@ const deptList = async () => {
         if (err) throw err;
         res.forEach(({ id, name }) => {
             departmentId.push(id);
-            departmentName.push(`-- ${name} : ${id} --`);
+            departmentName.push(` ${name} : ${id} `);
         })
     });
 };
@@ -191,4 +187,137 @@ const addRole = () => {
         });
     });
 
+};
+
+const employeesMenu = () => {
+    inquirer.prompt ([
+        {
+            type: 'list',
+            message: 'What would you like to do?',
+            name: 'employeesInit',
+            choices: ['View Employees', 'Add Employee', 'Update Employee Roles', 'Back to Main Menu']
+        }
+    ])
+    .then(response => {
+        switch (response.employeesInit) {
+            case 'View Employees':
+                viewEmployees();
+                break;
+            case 'Add Employee':
+                addEmployee();
+                break;
+            case 'Update Employee Roles':
+                updateEmployees();
+                break;
+            case 'Back to Main Menu':
+                mainMenu();
+                break;
+        };
+    });
+};
+
+const viewEmployees = () => {
+    connection.query('SELECT employee.id, employee.first_name, employee.last_name, role.title as "Title" FROM employee_db.employee INNER JOIN employee_db.role ON employee.role_id = role.id', (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        employeesMenu();
+    });
+};
+
+let roleId = [];
+let roleList = [];
+
+const roleDisplay = async () => {
+    const roleName = connection.query('SELECT * FROM employee_db.role', (err, res) => {
+        if (err) throw err;
+        res.forEach(({ id, title }) => {
+            roleId.push(id)
+            roleList.push(` ${title}: ${id} `)
+        });
+    });
+};
+
+roleDisplay();
+
+const addEmployee = () => {
+    inquirer.prompt ([
+        {
+            type: 'input',
+            message: "Enter employee's first name",
+            name: 'firstName'
+        },
+        {
+            type: 'input',
+            message: "Enter employee's last name",
+            name: 'lastName'
+        },
+        {
+            type: 'list',
+            message: `Choose the ID number of the role this employee will have: \n${roleList} `,
+            name: 'role',
+            choices: roleId
+        }
+    ])
+    .then(response => {
+        connection.query('INSERT INTO employee_db.employee SET ?', 
+            {
+                first_name: `${response.firstName}`,
+                last_name: `${response.lastName}`,
+                role_id: `${response.role}`
+            },
+            (err, res) => {
+            if (err) throw err;
+            console.log(`You have created a new employee: \n${response.firstName} ${response.lastName}`);
+            employeesMenu();
+            });
+        });
+};
+
+let empName = [];
+let empId = [];
+
+const empNames = async () => {
+    const namesList = connection.query('SELECT id, first_name, last_name FROM employee_db.employee', (err, res) => {
+        if (err) throw err;
+        res.forEach(({ id, first_name, last_name }) => {
+            empId.push(id);
+            empName.push(` ${first_name} ${last_name}: ${id} `);
+        });
+    });
+};
+
+empNames();
+
+const updateEmployees = () => {
+    inquirer.prompt ([
+        {
+            type: 'list',
+            message: `Choose the ID of the employee you would like to update: \n${empName} `,
+            name: 'names',
+            choices: empId
+        },
+        {
+            type: 'list',
+            message: `Choose the ID of the new role you would like the employee to have: \n${roleList}`,
+            name: 'roles',
+            choices: roleId
+        }
+    ])
+    .then(response => {
+    const query = connection.query(
+        `UPDATE employee_db.employee SET ? WHERE ?`,
+        [
+        {
+            role_id: `${response.roles}`,
+        },
+        {
+            id: `${response.names}`
+        }
+        ],
+        (err, res) => {
+        if (err) throw err;
+        console.log(`You have successfully edited this employee!`);
+        employeesMenu();
+        });
+    });
 };
