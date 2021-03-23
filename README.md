@@ -18,3 +18,4 @@ The live repository for this app is below:
 https://github.com/codyregis6891/employee-tracker
 
 The walkthrough video can be seen here:
+https://drive.google.com/file/d/1pFdOUw5qMNaNItQHFfrsaN1PlKgRMRrz/view
