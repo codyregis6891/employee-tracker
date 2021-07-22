@@ -1,6 +1,25 @@
 # Employee Tracker
 
+## License
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
+## Application
+
+The walkthrough video can be seen here:
+https://drive.google.com/file/d/1pFdOUw5qMNaNItQHFfrsaN1PlKgRMRrz/view
+
+## Technology Used
+
+* Javascript
+* Node.js
+* Inquirer NPM Package
+* Console.Table NPM Package
+* dotenv NPM Package
+* mysql NPM Package
+* MySQL Database
+
 
 ## Description
 
@@ -8,14 +27,20 @@ This Employee Tracker uses inquirer to obtain the user's input from questions ru
 
 ## Installation
 
-This generator was made using javaScript.  Also necessary was installing and implementing Inquirer, console.table, and mysql.  Using the data collected, a information was stored to the database.
+1. Clone the Repo
+  ```sh
+  git@github.com:codyregis6891/employee-tracker.git
+  ```
+2. All NPM packages required for this application are already listed as dependencies in the package.json file. Run the command 'npm i' command in your terminal at the root    directory level to install the packages.
 
-The user is able to use commands through inquirer via the node in the terminal to view this information stored to the database, as well as edit information stored on the database.
+3. Open the employee_db.sql file inside the db folder, then copy and paste the contents into your SQL Database.
 
-## Application
+4. Open the seeds.sql file inside the db folder, then copy and paste the contents into your SQL Database.
 
-The live repository for this app is below:
-https://github.com/codyregis6891/employee-tracker
+5. Ensure you have Node.js installed on your machine. The application will be invoked by entering node server.js in the command line.
 
-The walkthrough video can be seen here:
-https://drive.google.com/file/d/1pFdOUw5qMNaNItQHFfrsaN1PlKgRMRrz/view
+
+## Questions or Issues?
+
+* Email: codyregis6891@gmail.com
+* https://github.com/codyregis6891/employee-tracker/issues
